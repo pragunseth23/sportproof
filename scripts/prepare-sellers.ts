@@ -16,7 +16,7 @@ const pub=createPublicClient({chain:baseSepolia,transport:http(RPC_URL)});
 const wallet=createWalletClient({account,chain:baseSepolia,transport:http(RPC_URL)});
 if(await pub.getChainId()!==84532)throw new Error('Base Sepolia required');
 const abi=JSON.parse(await readFile('contracts/out/SportProofMarket.sol/SportProofMarket.json','utf8')).abi;
-const GAS_GRANT=parseEther('0.0006');
+const GAS_GRANT=parseEther('0.0002');
 const results=[];
 for(const tenantId of [...new Set(EVENTS.map(e=>e.organizerId))]){
  const w=await ensureWallet(null,tenantId,'seller');
