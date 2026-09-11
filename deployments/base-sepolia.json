@@ -1,0 +1,20 @@
+{
+  "chainId": 84532,
+  "address": "0xe138722b6e466044efaa515337255a735716c326",
+  "deploymentTransaction": "0xaa034363bda24d8ea69721733e0a802291dd541c802590deb896463d1fb68511",
+  "deploymentBlock": "46671776",
+  "deploymentBlockHash": "0xb0071896b1cb03f6c693cc4988f4446a64ed9a21d358d0bad0a94a7c5bff6d91",
+  "bytecodeHash": "0x373fb9bceef2c8a9d4c4a1d54c1b321ee9985eb4632462d0c7e050e880ef40f9",
+  "constructorArguments": [
+    "0x873ed0A75c8C581dA94aB321aaA34873381bc9AE",
+    "0x5Fd227546e9864F9686E1E73c8aBde02a745f96E"
+  ],
+  "compiler": "0.8.30",
+  "optimizerRuns": 200,
+  "evmVersion": "cancun",
+  "openzeppelin": "5.6.1",
+  "foundry": "1.8.1",
+  "confirmations": 2,
+  "sourceVerification": "verified",
+  "explorer": "https://sepolia.basescan.org/address/0xe138722b6e466044efaa515337255a735716c326"
+}

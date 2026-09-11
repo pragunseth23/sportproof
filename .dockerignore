@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+node_modules
+.local
+apps/web/.next
+contracts/lib
+contracts/out
+contracts/cache
+test-results
+playwright-report

@@ -1,0 +1,23 @@
+/** Operator-only deployment. Test ETH only, separate deployer key. */
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createPublicClient, createWalletClient, http, keccak256, type Hex } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { baseSepolia } from 'viem/chains';
+import { execFileSync } from 'node:child_process';
+const { RPC_URL, DEPLOYER_PRIVATE_KEY, VERIFIER_ADDRESS }=process.env;
+if(!RPC_URL||!DEPLOYER_PRIVATE_KEY||!VERIFIER_ADDRESS)throw new Error('Set RPC_URL, DEPLOYER_PRIVATE_KEY, VERIFIER_ADDRESS; no deployment performed');
+const account=privateKeyToAccount(DEPLOYER_PRIVATE_KEY as Hex);
+if(account.address.toLowerCase()===VERIFIER_ADDRESS.toLowerCase())throw new Error('Separate deployer and verifier required');
+const client=createPublicClient({chain:baseSepolia,transport:http(RPC_URL)});
+if(await client.getChainId()!==84532)throw new Error('Base Sepolia 84532 required');
+if(await client.getBalance({address:account.address})===0n)throw new Error('Deployer lacks Base Sepolia faucet ETH');
+execFileSync(process.env.FORGE_BIN??'forge',['build','--root','contracts'],{stdio:'inherit'});
+const artifact=JSON.parse(await readFile('contracts/out/SportProofMarket.sol/SportProofMarket.json','utf8'));
+const wallet=createWalletClient({account,chain:baseSepolia,transport:http(RPC_URL)});
+const hash=await wallet.deployContract({abi:artifact.abi,bytecode:artifact.bytecode.object,args:[account.address,VERIFIER_ADDRESS]});
+const receipt=await client.waitForTransactionReceipt({hash,confirmations:2});
+if(receipt.status!=='success'||!receipt.contractAddress)throw new Error('Deployment failed');
+const code=await client.getCode({address:receipt.contractAddress});if(!code)throw new Error('No deployed code');
+await mkdir('deployments',{recursive:true});
+await writeFile('deployments/base-sepolia.json',JSON.stringify({chainId:84532,address:receipt.contractAddress,deploymentTransaction:hash,deploymentBlock:receipt.blockNumber.toString(),deploymentBlockHash:receipt.blockHash,bytecodeHash:keccak256(code),constructorArguments:[account.address,VERIFIER_ADDRESS],compiler:'0.8.30',optimizerRuns:200,evmVersion:'cancun',openzeppelin:'5.6.1',foundry:'1.8.1',confirmations:2,sourceVerification:'not_attempted',explorer:`https://sepolia.basescan.org/address/${receipt.contractAddress}`},null,2));
+console.log(`Deployed: https://sepolia.basescan.org/address/${receipt.contractAddress}`);

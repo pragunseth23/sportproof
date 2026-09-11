@@ -1,0 +1,49 @@
+{
+  "name": "sportproof",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.4.0",
+  "scripts": {
+    "dev": "node scripts/run-web.mjs dev apps/web --hostname 127.0.0.1 --port 3000",
+    "build": "node scripts/run-web.mjs build apps/web",
+    "start": "node scripts/run-web.mjs start apps/web --hostname 0.0.0.0",
+    "worker": "tsx --env-file=.env apps/worker/index.ts",
+    "db:migrate": "tsx --env-file=.env scripts/migrate.ts",
+    "seed:local": "tsx --env-file=.env scripts/seed-local.ts",
+    "seed:private-demo": "tsx --env-file=.env scripts/seed-private-demo.ts",
+    "offers:publish": "tsx --env-file=.env scripts/publish-offers.ts",
+    "smoke:testnet": "tsx --env-file=.env scripts/smoke-testnet.ts",
+    "chain:deploy:testnet": "tsx --env-file=.env scripts/chain-deploy.ts",
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:sport-packs": "vitest run tests/analytics.test.ts",
+    "test:e2e": "playwright test",
+    "check:environment": "tsx --env-file=.env scripts/check-environment.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.125.0",
+    "@openzeppelin/contracts": "5.6.1",
+    "drizzle-orm": "0.45.2",
+    "lucide-react": "1.44.0",
+    "next": "16.3.4",
+    "openai": "7.15.0",
+    "postgres": "3.4.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwindcss": "4.3.3",
+    "viem": "2.56.3",
+    "zod": "4.6.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.2.3",
+    "drizzle-kit": "0.31.10",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  }
+}

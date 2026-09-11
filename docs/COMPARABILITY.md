@@ -1,0 +1,9 @@
+# Comparison and privacy rules
+
+`compareMetrics` requires purchased verified evidence and matching population, units, denominator, deduplication, geography basis, access scope and source. Percentages alone never suffice. Mismatches produce a labeled goal-level tradeoff, never a universal cost per fan. Period and coverage still require inspection; historical evidence is not a forecast.
+
+`rankCandidates` accepts explicit mission utility weights and basis-point inputs. Unknowns receive bounds [0, 10000]; their weight is never redistributed. Output is a decision aid with unknown criterion names, not an empirical audience score. Required-evidence absence should cause caller abstention; a highest lower bound by itself does not prove dominance.
+
+Queries use whole native blocks or an entire edition, one zone, and approved product/category/region bins. Unknown keys and arbitrary subsets are rejected. `authorizeRelease` rejects changed cohort refinements across releases for the same sponsor/event/edition. The backend must persist the ledger under a sponsor-organization lock. Wallet rotation must not reset this policy. A repeated exact scope reuses its prior result.
+
+Minimum-group suppression alone does not stop subtraction attacks. We apply conservative family suppression and a constrained query lattice; this is not differential privacy or a legal compliance guarantee. [AWS Clean Rooms limitations](https://docs.aws.amazon.com/clean-rooms/latest/userguide/custom-considerations.html) was checked during implementation and explicitly discusses differencing risk. [RunSignup check-in documentation](https://help.runsignup.com/support/solutions/articles/17000141615-raceday-checkin-app-checkin-participants-4-) was checked for distinct check-in/bib operations; no provider integration or partnership is claimed.

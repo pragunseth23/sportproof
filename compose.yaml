@@ -1,0 +1,46 @@
+services:
+  database:
+    image: postgres:16.10-bookworm
+    environment:
+      POSTGRES_DB: sportproof
+      POSTGRES_USER: sportproof
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - sportproof-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sportproof"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    build: .
+    command: ["pnpm", "exec", "tsx", "scripts/migrate.ts"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://sportproof:${POSTGRES_PASSWORD}@database:5432/sportproof
+    depends_on:
+      database:
+        condition: service_healthy
+  web:
+    build: .
+    command: ["pnpm", "start"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://sportproof:${POSTGRES_PASSWORD}@database:5432/sportproof
+    ports:
+      - "3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  worker:
+    build: .
+    command: ["pnpm", "exec", "tsx", "apps/worker/index.ts"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://sportproof:${POSTGRES_PASSWORD}@database:5432/sportproof
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+volumes:
+  sportproof-db:
