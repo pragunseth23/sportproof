@@ -68,7 +68,7 @@ export async function modelStep(instructions:string,context:unknown,tools:AgentT
  const call=isAnthropicKey(creds.apiKey)?await anthropicToolCall(creds,instructions,context,tools):await openaiToolCall(creds,instructions,context,tools);
  const tool=tools.find(t=>t.name===call.name);
  if(!tool)throw new Error('Unauthorized model tool');
- const args=tool.schema.parse(call.rawArgs);
+ let args;try{args=tool.schema.parse(call.rawArgs)}catch(parseError){return {tool:call.name,callId:call.callId,output:{toolError:'Invalid arguments: '+(parseError as Error).message.slice(0,250)}}}
  if(executionKey)await sql()`INSERT INTO tool_executions(mission_id,call_id,name,output,status) VALUES(${executionKey},'step',${tool.name},${sql().json({arguments:args} as any)},'planned') ON CONFLICT DO NOTHING`;
  // A failed tool becomes data for the next step instead of killing the mission.
  const output=await tool.execute(args,call.callId).catch((toolError:Error)=>({toolError:toolError.message.slice(0,300)}));
