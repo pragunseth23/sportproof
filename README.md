@@ -8,7 +8,9 @@ All organizations, records, source claims and commercial prices are fictional. H
 
 ## Current delivery status
 
-The SportProofMarket contract is **deployed on Base Sepolia** at [`0xe138722b6e466044efaa515337255a735716c326`](https://sepolia.basescan.org/address/0xe138722b6e466044efaa515337255a735716c326) (manifest: `deployments/base-sepolia.json`; source verified on BaseScan). **No public application URL, live-model mission, or paid-report transaction is claimed yet.** See [test results](docs/TEST_REPORT.md) and [completion status](docs/COMPLETION.md) for exact executed coverage and remaining work. Local Anvil transactions are not public-testnet acceptance.
+**Live demo: [sportproof.vercel.app](https://sportproof.vercel.app)** (bring your own Anthropic or OpenAI key to run a research mission).
+
+The SportProofMarket contract is **deployed on Base Sepolia** at [`0xe138722b6e466044efaa515337255a735716c326`](https://sepolia.basescan.org/address/0xe138722b6e466044efaa515337255a735716c326) (manifest: `deployments/base-sepolia.json`; source verified on BaseScan). **No live-model mission or paid-report transaction is claimed yet.** See [test results](docs/TEST_REPORT.md) and [completion status](docs/COMPLETION.md) for exact executed coverage and remaining work. Local Anvil transactions are not public-testnet acceptance.
 
 ## Run
 
