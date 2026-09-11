@@ -18,3 +18,4 @@ h2{font-family:var(--font-display),Archivo,sans-serif!important;font-weight:700!
 .primary:hover{background:#16305a}
 button:focus-visible,a:focus-visible{outline:2px solid #1d428a}
 .nav-item,.field,.semantic-note,.panel>p{font-size:13px}
+.wallet-panel{margin-top:18px}.wallet-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px}.wallet-row code{background:#eef2f8;border:1px solid #d5deea;border-radius:6px;padding:6px 9px;overflow-wrap:anywhere;font-size:11px}.wallet-row a{color:#1d428a;font-size:11px}.wallet-balance{margin-left:auto}.wallet-row label{display:flex;align-items:center;gap:7px;font-size:11px}.wallet-row input{width:80px;border:1px solid #d5deea;border-radius:6px;padding:7px 9px}.modal-alert{background:#f3f6fc;border:1px solid #c8d6ec;border-radius:8px;padding:12px 15px;font-size:12.5px;margin:12px 0}.modal-alert p{margin:0 0 10px}

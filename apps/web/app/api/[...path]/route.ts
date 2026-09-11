@@ -1,5 +1,5 @@
 import {NextRequest,NextResponse} from 'next/server';
-import {createSession,verifySession,createMission,getMission,stopMission,listPublicOffers,getHealth,readPurchasedReport,requestCustomAnalysis} from '../../../../../packages/server/index';
+import {createSession,verifySession,createMission,getMission,stopMission,listPublicOffers,getHealth,readPurchasedReport,requestCustomAnalysis,getResearchWallet} from '../../../../../packages/server/index';
 import {validateOrganizerSource,getOrganizerInventory,saveOrganizerPolicy} from '../../../../../packages/server/organizer';
 import {getSellerHistory} from '../../../../../packages/server/history';
 import {EVENTS,SPORT_PACKS,getEvent,getSportPack} from '../../../../../packages/sports/src/index';
@@ -24,7 +24,8 @@ async function dispatch(req:NextRequest,ctx:{params:Promise<{path:string[]}>}){
  if(!principal)return response({error:'Buyer authentication required'},401);
  let body:unknown={};if(req.method==='POST'){const raw=await req.text();if(raw.length>16_384)return response({error:'Request too large'},413);body=JSON.parse(raw)}
  let data:unknown;
- if(path[0]==='missions'&&req.method==='POST'&&path.length===1)data=await createMission(principal,body);
+ if(path[0]==='wallet'&&req.method==='GET')data=await getResearchWallet(principal);
+ else if(path[0]==='missions'&&req.method==='POST'&&path.length===1)data=await createMission(principal,body);
  else if(path[0]==='missions'&&path[1]&&req.method==='GET')data=await getMission(principal,path[1]);
  else if(path[0]==='missions'&&path[1]&&path[2]==='stop'&&req.method==='POST')data=await stopMission(principal,path[1]);
  else if(path[0]==='market-orders'&&path[1]&&path[2]==='report'&&req.method==='GET')data=await readPurchasedReport(principal,path[1]);

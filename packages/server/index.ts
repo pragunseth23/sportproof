@@ -13,4 +13,14 @@ export async function listPublicOffers(principal?:Principal){return sql()`SELECT
 export async function getHealth(){let database=false,worker=false;try{await sql()`SELECT 1`;database=true;const [alive]=await sql()`SELECT EXISTS(SELECT 1 FROM worker_health WHERE heartbeat_at>now()-interval '45 seconds') AS alive`;worker=alive.alive}catch{}const missing=['RPC_URL','MARKET_CONTRACT_ADDRESS','MARKET_BYTECODE_HASH','VERIFIER_PRIVATE_KEY'].filter(k=>!process.env[k]);const {platformCredentials}=await import('../agents/provider');const platform=platformCredentials();const byok=process.env.FORCE_BYOK==='true'||!platform;return {mode:process.env.DEMO_MODE??'live',chainId:84532,network:'Base Sepolia',confirmations:Math.max(2,Number(process.env.CONFIRMATIONS??2)),model:platform?.model??null,byok,database,worker,ready:database&&worker&&missing.length===0,missing,contract:process.env.MARKET_CONTRACT_ADDRESS??null,disclosure:'Synthetic data · custodial test wallets · platform-run deterministic verifier. L2 confirmation is not L1 finality.'}}
 export async function activity(missionId:string,actor:string,kind:string,summary:string,detail:Record<string,unknown>={}){await sql()`INSERT INTO mission_events(mission_id,actor,kind,summary,detail) VALUES(${missionId},${actor},${kind},${summary.slice(0,500)},${sql().json(detail as any)})`}
 export async function readPurchasedReport(principal:Principal,orderId:string):Promise<unknown>{const {readReport}=await import('./market');return readReport(principal,orderId)}
+export async function getResearchWallet(principal:Principal){
+ if(principal.role!=='buyer')throw new Error('Buyer authorization required');
+ const {ensureWallet}=await import('./wallet');
+ const wallet=await ensureWallet(principal.id,principal.tenantId,'buyer');
+ const {createPublicClient,http}=await import('viem');
+ const {baseSepolia}=await import('viem/chains');
+ let balanceWei='0';
+ try{const client=createPublicClient({chain:baseSepolia,transport:http(process.env.RPC_URL,{timeout:10000})});balanceWei=(await client.getBalance({address:wallet.address as `0x${string}`})).toString()}catch{}
+ return {address:wallet.address,balanceWei,chainId:84532,explorer:'https://sepolia.basescan.org/address/'+wallet.address};
+}
 export async function requestCustomAnalysis(principal:Principal,input:unknown){const {customRequest}=await import('./market');return customRequest(principal,input)}
