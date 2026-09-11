@@ -30,7 +30,7 @@ function anthropicClient(creds:ProviderCredentials,opts:{timeout?:number;maxRetr
 }
 async function anthropicToolCall(creds:ProviderCredentials,instructions:string,context:unknown,tools:AgentTool[]){
  const client=anthropicClient(creds);
- const response=await client.messages.create({
+ const stream=client.messages.stream({
   model:creds.model,
   max_tokens:32000,
   system:instructions,
@@ -38,6 +38,7 @@ async function anthropicToolCall(creds:ProviderCredentials,instructions:string,c
   tools:tools.map(t=>({name:t.name,description:t.description,input_schema:t.parameters as Anthropic.Tool['input_schema'],strict:true})),
   tool_choice:{type:'any',disable_parallel_tool_use:true},
  });
+ const response=await stream.finalMessage();
  if(response.stop_reason==='refusal')throw new Error('Model declined this step');
  const call=response.content.find((b):b is Anthropic.ToolUseBlock=>b.type==='tool_use');
  if(!call)throw new Error('Model did not return an authorized tool call');
