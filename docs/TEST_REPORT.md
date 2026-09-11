@@ -32,3 +32,13 @@ Bring-your-own-key changes verified after implementation:
 - `pnpm typecheck`, 48/48 vitest (Postgres suite executing), 9/9 Playwright, production build: all passed.
 - Live API checks against the dev server: mission creation without a key returns "This deployment requires your own OpenAI API key to run a mission"; an invalid `sk-` key is rejected by real provider validation with "OpenAI rejected this API key". A valid-key end-to-end agent run remains unexercised (no real key configured).
 - `/api/health` reports `byok: true` with `RPC_URL` satisfied; remaining `missing`: `MARKET_CONTRACT_ADDRESS`, `MARKET_BYTECODE_HASH` (filled by testnet deployment).
+
+## Live deployment verification, September 11, 2026
+
+Against https://sportproof.vercel.app (Vercel web + Railway worker + Neon PostgreSQL, migrated from the local database):
+
+- `/api/health`: ready: true, database: true, worker: true, byok: true, contract configured. Verified live.
+- 23 public marketplace listings served, all with on-chain registrations on the Base Sepolia contract.
+- Mission creation without a key: rejected with the bring-your-own-key requirement. With an invalid Anthropic key: rejected by real provider validation ("Anthropic rejected this API key").
+- Unauthorized report read: 401. Cross-origin mission POST: 403. PRIVATE_DEMO_SEED absent from served HTML.
+- Not yet exercised live: a full paid mission (needs a real visitor key), settlement, and refund flows on the public site.

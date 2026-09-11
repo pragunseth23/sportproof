@@ -22,7 +22,7 @@ Executed commands and actual results belong in TEST_REPORT.md. Local scope is no
 
 ## Not completed / remaining acceptance
 
-- Public application deployment and public Base Sepolia contract, verified source, genuine public success/refund/withdrawal references.
+- ~~Public application deployment and public Base Sepolia contract, verified source~~ DONE September 11, 2026: https://sportproof.vercel.app, contract 0xe138722b6e466044efaa515337255a735716c326 (source verified), 23 on-chain listings. Still outstanding: genuine public success/refund/withdrawal transaction references.
 - Actual model-driven mission comparing two sports, rejecting unsuitable evidence, changing the recommendation and completing a sport-native custom paid follow-up.
 - All-six-pack public-testnet paid smoke runs and public invalid-report refund.
 - Complete live-demo screen recording. A local interface recording, if supplied, is explicitly not that evidence.
